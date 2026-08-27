@@ -1,0 +1,799 @@
+/* ============================================================
+   PROJECT TAJINN — design tokens
+   Single-theme by intent: this is a screen, not a document.
+   Every color is painted explicitly so the page holds on any
+   host ground.
+   ============================================================ */
+:root{
+  --void:#020602;
+  --ink:#061006;
+  --panel:#08150A;
+  --panel-2:#0C1E0E;
+  --panel-3:#112616;
+  --line:#143D18;
+  --line-soft:#0E2A11;
+  --deep:#073D0B;
+  --emerald:#0B6B16;
+  --bright:#19D62B;
+  --neon:#39FF14;
+
+  --text:#EAF7EA;
+  --text-2:#A9BFAB;
+  --text-3:#6B846D;
+
+  --chili:#F0512A;
+  --chili-deep:#C82B1E;
+  --chili-lite:#FF8A3D;
+  --lime:#A8E831;
+
+  --glow-sm:0 0 12px rgba(57,255,20,.22);
+  --glow-md:0 0 26px rgba(57,255,20,.28);
+  --glow-lg:0 0 60px rgba(57,255,20,.20);
+
+  --r-xs:6px; --r-sm:10px; --r:14px; --r-lg:20px; --r-xl:28px;
+
+  --f-display:"Chakra Petch",system-ui,"Segoe UI",sans-serif;
+  --f-body:"Barlow",system-ui,"Segoe UI",Helvetica,Arial,sans-serif;
+  --f-mono:"JetBrains Mono",ui-monospace,SFMono-Regular,Consolas,monospace;
+
+  --head-h:64px;
+  --maxw:1400px;
+  --ease:cubic-bezier(.22,.61,.36,1);
+}
+
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth}
+
+body{
+  margin:0;
+  min-height:100vh;
+  background:var(--void);
+  color:var(--text);
+  font-family:var(--f-body);
+  font-size:16px;
+  line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+
+h1,h2,h3,h4{font-family:var(--f-display);font-weight:700;line-height:1.08;margin:0;text-wrap:balance;letter-spacing:-.01em}
+p{margin:0}
+a{color:inherit;text-decoration:none}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+input{font:inherit;color:inherit}
+img,svg{display:block;max-width:100%}
+ul{list-style:none;margin:0;padding:0}
+
+:focus-visible{outline:2px solid var(--neon);outline-offset:3px;border-radius:4px}
+
+/* ---------- atmosphere ---------- */
+#bg-canvas{
+  position:fixed;inset:0;width:100%;height:100%;
+  z-index:0;pointer-events:none;
+}
+.atmos{
+  position:fixed;inset:0;z-index:0;pointer-events:none;
+  background:
+    radial-gradient(120% 70% at 50% -10%, rgba(11,107,22,.42) 0%, rgba(7,61,11,.16) 38%, transparent 68%),
+    radial-gradient(80% 50% at 10% 100%, rgba(11,107,22,.16) 0%, transparent 60%),
+    radial-gradient(70% 50% at 92% 82%, rgba(25,214,43,.10) 0%, transparent 60%),
+    linear-gradient(180deg,#04100604 0%,var(--void) 60%);
+}
+/* Scanlines that creep. A static raster reads as a texture; a slowly
+   rolling one reads as a live signal. */
+.atmos::after{
+  content:"";position:absolute;left:0;right:0;top:-4px;bottom:-4px;
+  background:repeating-linear-gradient(180deg,rgba(255,255,255,.016) 0 1px,transparent 1px 3px);
+  opacity:.55;
+  animation:roll 7s linear infinite;
+}
+@keyframes roll{from{transform:translateY(0)}to{transform:translateY(3px)}}
+/* Aurora. Three big soft masses drifting on long, mismatched cycles so
+   the sky never repeats a pose. Done in CSS rather than canvas because
+   blurred blobs on transforms stay on the GPU — repainting radial
+   gradients this large every frame would not. */
+.aurora{position:fixed;inset:-25%;z-index:0;pointer-events:none;overflow:hidden;filter:blur(72px)}
+.aurora i{position:absolute;display:block;border-radius:50%;opacity:.7}
+.aurora i:nth-child(1){
+  width:62vw;height:62vw;left:-10%;top:-8%;
+  background:radial-gradient(circle,rgba(25,214,43,.46),transparent 68%);
+  animation:drift1 21s ease-in-out infinite;
+}
+.aurora i:nth-child(2){
+  width:54vw;height:54vw;right:-8%;top:22%;
+  background:radial-gradient(circle,rgba(11,107,22,.56),transparent 66%);
+  animation:drift2 27s ease-in-out infinite;
+}
+.aurora i:nth-child(3){
+  width:70vw;height:70vw;left:18%;bottom:-24%;
+  background:radial-gradient(circle,rgba(57,255,20,.24),transparent 70%);
+  animation:drift3 33s ease-in-out infinite;
+}
+.aurora i:nth-child(4){
+  width:46vw;height:46vw;left:34%;top:8%;
+  background:radial-gradient(circle,rgba(124,246,160,.20),transparent 64%);
+  animation:drift4 17s ease-in-out infinite;
+}
+@keyframes drift1{
+  0%,100%{transform:translate(0,0) scale(1)}
+  33%{transform:translate(14vw,7vh) scale(1.16)}
+  66%{transform:translate(5vw,-6vh) scale(.9)}
+}
+@keyframes drift2{
+  0%,100%{transform:translate(0,0) scale(1.05)}
+  40%{transform:translate(-13vw,10vh) scale(.88)}
+  70%{transform:translate(-4vw,-9vh) scale(1.2)}
+}
+@keyframes drift3{
+  0%,100%{transform:translate(0,0) scale(.95)}
+  50%{transform:translate(-11vw,-12vh) scale(1.22)}
+}
+@keyframes drift4{
+  0%,100%{transform:translate(0,0) scale(1)}
+  25%{transform:translate(9vw,-8vh) scale(1.25)}
+  55%{transform:translate(-10vw,6vh) scale(.82)}
+  80%{transform:translate(4vw,9vh) scale(1.1)}
+}
+
+/* Film grain. Flat vector gradients are what make a page read as
+   machine-made; a little tooth breaks that up. */
+.grain{
+  position:fixed;inset:-50%;z-index:2;pointer-events:none;
+  opacity:.035;mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.82' numOctaves='3'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)'/%3E%3C/svg%3E");
+  animation:grainShift 5s steps(6) infinite;
+}
+@keyframes grainShift{
+  0%{transform:translate(0,0)}      20%{transform:translate(-3%,2%)}
+  40%{transform:translate(2%,-3%)}  60%{transform:translate(-2%,-2%)}
+  80%{transform:translate(3%,1%)}   100%{transform:translate(0,0)}
+}
+.shell{position:relative;z-index:3}
+
+::selection{background:rgba(57,255,20,.28);color:#fff}
+
+/* Terminal corner brackets — the subject's own vernacular, used on the
+   two panels that are meant to read as hardware. */
+.brackets{position:relative}
+.brackets::before,.brackets::after{
+  content:"";position:absolute;width:16px;height:16px;pointer-events:none;
+  border-color:var(--bright);opacity:.75;
+}
+.brackets::before{top:10px;left:10px;border-top:1.5px solid;border-left:1.5px solid}
+.brackets::after{bottom:10px;right:10px;border-bottom:1.5px solid;border-right:1.5px solid}
+
+/* ---------- boot screen ---------- */
+#boot{
+  position:fixed;inset:0;z-index:200;
+  background:#000;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;
+  transition:opacity .5s var(--ease),visibility .5s;
+}
+#boot.done{opacity:0;visibility:hidden}
+#boot .mark{width:74px;animation:bob 2.4s ease-in-out infinite}
+#boot .bt{
+  font-family:var(--f-display);font-size:clamp(1.5rem,5vw,2.1rem);font-weight:700;
+  letter-spacing:.24em;text-indent:.24em;color:var(--text);
+  text-shadow:0 0 22px rgba(57,255,20,.5);
+}
+#boot .bs{
+  font-family:var(--f-mono);font-size:.7rem;letter-spacing:.34em;
+  color:var(--bright);text-transform:uppercase;
+}
+#boot .bar{width:min(240px,60vw);height:2px;background:var(--line-soft);border-radius:2px;overflow:hidden}
+#boot .bar i{display:block;height:100%;width:0;background:var(--neon);box-shadow:var(--glow-sm);animation:fill 1.05s var(--ease) forwards}
+@keyframes fill{to{width:100%}}
+@keyframes bob{0%,100%{transform:translateY(0) rotate(15deg)}50%{transform:translateY(-9px) rotate(15deg)}}
+
+/* ---------- brand mark ---------- */
+.mark{display:block;aspect-ratio:120/200;filter:drop-shadow(0 6px 16px rgba(0,0,0,.6))}
+.mark.tilt{transform:rotate(15deg)}
+.mark.lit{filter:drop-shadow(0 0 22px rgba(57,255,20,.4)) drop-shadow(0 8px 18px rgba(0,0,0,.7))}
+
+/* ---------- header ---------- */
+.hdr{
+  position:sticky;top:0;z-index:100;
+  height:var(--head-h);
+  display:flex;align-items:center;gap:18px;
+  padding:0 22px;
+  background:rgba(4,11,5,.78);
+  backdrop-filter:blur(16px) saturate(140%);
+  -webkit-backdrop-filter:blur(16px) saturate(140%);
+  border-bottom:1px solid var(--line-soft);
+}
+.brand{display:flex;align-items:center;gap:11px;flex-shrink:0}
+.brand .mark{width:27px}
+.brand b{
+  font-family:var(--f-display);font-weight:700;font-size:.94rem;
+  letter-spacing:.15em;text-transform:uppercase;white-space:nowrap;
+}
+.brand b span{color:var(--neon)}
+
+.nav{display:flex;gap:2px;margin-left:8px}
+.nav a{
+  font-family:var(--f-display);font-size:.82rem;font-weight:600;
+  letter-spacing:.09em;text-transform:uppercase;color:var(--text-2);
+  padding:8px 13px;border-radius:var(--r-xs);
+  transition:color .22s var(--ease),background .22s var(--ease);
+  white-space:nowrap;
+}
+.nav a:hover{color:var(--text);background:rgba(25,214,43,.09)}
+.nav a.on{color:var(--neon);background:rgba(57,255,20,.11);box-shadow:inset 0 0 0 1px rgba(57,255,20,.22)}
+
+.hdr-r{margin-left:auto;display:flex;align-items:center;gap:10px}
+
+.hud{display:flex;gap:6px}
+.chip{
+  display:flex;align-items:center;gap:6px;
+  font-family:var(--f-mono);font-size:.68rem;font-weight:500;
+  color:var(--text-2);
+  padding:6px 10px;border-radius:99px;
+  background:var(--panel);border:1px solid var(--line-soft);
+  white-space:nowrap;font-variant-numeric:tabular-nums;
+}
+.chip i{width:5px;height:5px;border-radius:50%;background:var(--neon);box-shadow:var(--glow-sm);flex-shrink:0}
+.chip.batt i{background:var(--bright)}
+
+.search{
+  position:relative;display:flex;align-items:center;
+  background:var(--panel);border:1px solid var(--line);
+  border-radius:99px;padding:0 14px;height:38px;width:250px;
+  transition:border-color .25s var(--ease),box-shadow .25s var(--ease),width .3s var(--ease);
+}
+.search:focus-within{border-color:var(--bright);box-shadow:var(--glow-sm);width:300px}
+.search svg{width:15px;height:15px;stroke:var(--text-3);flex-shrink:0;transition:stroke .25s}
+.search:focus-within svg{stroke:var(--neon)}
+.search input{
+  border:0;background:none;outline:none;width:100%;
+  padding:0 9px;font-size:.88rem;color:var(--text);
+}
+.search input::placeholder{color:var(--text-3)}
+.search kbd{
+  font-family:var(--f-mono);font-size:.6rem;color:var(--text-3);
+  border:1px solid var(--line);border-radius:4px;padding:2px 5px;flex-shrink:0;
+}
+.search:focus-within kbd{opacity:0}
+
+.icon-btn{
+  width:38px;height:38px;flex-shrink:0;
+  display:grid;place-items:center;border-radius:50%;
+  background:var(--panel);border:1px solid var(--line-soft);
+  transition:all .24s var(--ease);position:relative;
+}
+.icon-btn svg{width:17px;height:17px;stroke:var(--text-2);fill:none;stroke-width:1.7;transition:stroke .24s}
+.icon-btn:hover{border-color:var(--bright);box-shadow:var(--glow-sm);transform:translateY(-1px)}
+.icon-btn:hover svg{stroke:var(--neon)}
+.icon-btn .cnt{
+  position:absolute;top:-3px;right:-3px;min-width:17px;height:17px;padding:0 4px;
+  border-radius:99px;background:var(--neon);color:#02220A;
+  font-family:var(--f-mono);font-size:.6rem;font-weight:700;
+  display:grid;place-items:center;border:2px solid var(--void);
+}
+.icon-btn .cnt:empty,.icon-btn .cnt[data-n="0"]{display:none}
+
+.burger{display:none}
+
+/* ---------- mobile drawer ---------- */
+.drawer{
+  position:fixed;inset:var(--head-h) 0 0;z-index:99;
+  background:rgba(2,6,2,.97);backdrop-filter:blur(20px);
+  padding:26px 22px;
+  display:flex;flex-direction:column;gap:6px;
+  transform:translateX(100%);transition:transform .34s var(--ease);
+  visibility:hidden;
+}
+.drawer.open{transform:translateX(0);visibility:visible}
+.drawer a{
+  font-family:var(--f-display);font-size:1.15rem;font-weight:600;
+  letter-spacing:.08em;text-transform:uppercase;color:var(--text-2);
+  padding:15px 6px;border-bottom:1px solid var(--line-soft);
+}
+.drawer a.on{color:var(--neon)}
+
+/* ---------- layout ---------- */
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 22px}
+.sect{padding:64px 0 8px}
+.sect-hd{
+  display:flex;align-items:flex-end;justify-content:space-between;
+  gap:20px 24px;margin-bottom:26px;flex-wrap:wrap;
+  position:relative;padding-bottom:16px;
+}
+/* A rule that runs the full width and notches up at the left edge —
+   structure you can see, rather than headings floating in space. */
+.sect-hd::after{
+  content:"";position:absolute;left:0;right:0;bottom:0;height:1px;
+  background:linear-gradient(90deg,var(--emerald) 0 46px,var(--line-soft) 46px);
+}
+.eyebrow{
+  font-family:var(--f-mono);font-size:.64rem;font-weight:500;
+  letter-spacing:.3em;text-transform:uppercase;color:var(--bright);
+  display:flex;align-items:center;gap:9px;margin-bottom:10px;
+}
+.eyebrow::before{content:"";width:18px;height:1px;background:var(--emerald);flex-shrink:0}
+.sect-hd h2{font-size:clamp(1.45rem,3.3vw,2.1rem);letter-spacing:.02em;text-transform:uppercase}
+.sect-hd .sub{color:var(--text-3);font-size:.88rem;margin-top:6px;max-width:56ch}
+.link-more{
+  font-family:var(--f-mono);font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--text-2);display:flex;align-items:center;gap:7px;
+  padding:8px 14px;border:1px solid var(--line);border-radius:99px;
+  transition:all .24s var(--ease);
+}
+.link-more:hover{color:var(--neon);border-color:var(--bright);box-shadow:var(--glow-sm)}
+
+/* ---------- hero ---------- */
+.hero{
+  position:relative;
+  min-height:min(84vh,720px);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  text-align:center;padding:70px 22px 60px;gap:6px;
+}
+.hero .mark{width:clamp(86px,13vw,124px);animation:bob 5s ease-in-out infinite;margin-bottom:22px}
+/* Solid, not gradient-filled. Gradient headline text is the single
+   loudest "generated page" tell; weight and glow carry it instead. */
+/* Stays on one line at every width — the type-out reads as a wordmark
+   being written, and a mid-word wrap would break that. The floor is set
+   low enough that 14 characters still fit a 375px screen. */
+.hero h1{
+  font-size:clamp(2.05rem,9.2vw,6.6rem);
+  letter-spacing:.02em;text-transform:uppercase;
+  line-height:.94;color:var(--text);
+  text-shadow:0 0 44px rgba(57,255,20,.30),0 0 4px rgba(57,255,20,.34);
+  white-space:nowrap;
+}
+
+/* ---- typed wordmark ---- */
+.hero h1 .ch{position:relative;opacity:0;transition:opacity .06s linear}
+.hero h1 .ch.on{opacity:1}
+.hero h1 .ch.cur::after{
+  content:"";position:absolute;left:104%;bottom:.055em;
+  width:.52em;height:.075em;
+  background:var(--neon);box-shadow:0 0 14px rgba(57,255,20,.9);
+  animation:caret 1.05s steps(1,end) infinite;
+}
+@keyframes caret{0%,49%{opacity:1}50%,100%{opacity:0}}
+
+/* Everything under the wordmark waits for the type-out to land. */
+.hero .after{opacity:0;transform:translateY(10px);transition:opacity .5s var(--ease),transform .5s var(--ease)}
+.hero.typed .after{opacity:1;transform:none}
+.hero.typed .after.d1{transition-delay:.06s}
+.hero.typed .after.d2{transition-delay:.16s}
+.hero.typed .after.d3{transition-delay:.26s}
+.hero .tag{
+  font-family:var(--f-display);font-weight:600;
+  font-size:clamp(.95rem,2.6vw,1.35rem);
+  letter-spacing:.2em;text-transform:uppercase;color:var(--text);
+  margin-top:20px;
+}
+.hero .kicker{
+  font-family:var(--f-mono);font-size:.72rem;font-weight:500;
+  letter-spacing:.4em;text-transform:uppercase;color:var(--bright);
+  margin-top:13px;
+}
+.hero .cta{display:flex;gap:14px;margin-top:38px;flex-wrap:wrap;justify-content:center}
+/* Was a solid fade to --void, which stamped an opaque band across the
+   live background and made the hero look like a different page from the
+   rest. Now it only takes the edge off. */
+.hero-fade{
+  position:absolute;left:0;right:0;bottom:-1px;height:120px;pointer-events:none;
+  background:linear-gradient(180deg,transparent,rgba(2,6,2,.45) 92%);
+}
+
+/* ---------- buttons ---------- */
+.btn{
+  display:inline-flex;align-items:center;gap:10px;
+  font-family:var(--f-display);font-weight:700;font-size:.85rem;
+  letter-spacing:.13em;text-transform:uppercase;
+  padding:14px 28px;border-radius:99px;
+  border:1px solid var(--line);background:var(--panel);color:var(--text);
+  transition:all .26s var(--ease);white-space:nowrap;
+}
+.btn svg{width:16px;height:16px;flex-shrink:0}
+.btn:hover{transform:translateY(-2px);border-color:var(--bright);box-shadow:var(--glow-md)}
+.btn.primary{
+  background:linear-gradient(160deg,var(--bright),var(--emerald));
+  border-color:var(--bright);color:#02220A;
+  box-shadow:0 6px 26px rgba(25,214,43,.3);
+}
+.btn.primary:hover{
+  background:linear-gradient(160deg,var(--neon),var(--bright));
+  box-shadow:0 10px 38px rgba(57,255,20,.44);
+}
+.btn.primary svg{stroke:#02220A;fill:none}
+.btn.ghost svg{stroke:var(--neon);fill:none;stroke-width:1.9}
+.btn.lg{padding:17px 38px;font-size:.95rem}
+.btn.block{width:100%;justify-content:center}
+
+/* ---------- featured rail ---------- */
+.rail{
+  display:flex;gap:18px;overflow-x:auto;padding:6px 22px 26px;
+  scroll-snap-type:x mandatory;scrollbar-width:thin;
+  scrollbar-color:var(--emerald) transparent;
+  max-width:var(--maxw);margin:0 auto;
+}
+.rail::-webkit-scrollbar{height:6px}
+.rail::-webkit-scrollbar-track{background:var(--line-soft);border-radius:9px}
+.rail::-webkit-scrollbar-thumb{background:var(--emerald);border-radius:9px}
+.rail::-webkit-scrollbar-thumb:hover{background:var(--bright)}
+.rail>*{flex:0 0 300px;scroll-snap-align:start}
+
+/* ---------- game card ---------- */
+.grid{
+  display:grid;gap:18px;
+  grid-template-columns:repeat(auto-fill,minmax(230px,1fr));
+  padding-bottom:20px;
+}
+.card{
+  position:relative;display:block;
+  background:var(--panel);
+  border:1px solid var(--line-soft);
+  border-radius:10px;
+  overflow:hidden;
+  transition:transform .28s var(--ease),border-color .28s var(--ease),box-shadow .28s var(--ease);
+  box-shadow:0 2px 14px rgba(0,0,0,.5);
+  /* `backwards`, not `both` — a forwards-filled animation would keep
+     asserting transform:none and silently kill the hover lift. */
+  animation:cardIn .42s var(--ease) backwards;
+}
+@keyframes cardIn{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+/* Lift only — no scale. Scaling every card on hover is the stock
+   move, and it softens the artwork as it grows. */
+.card:hover{
+  transform:translateY(-5px);
+  border-color:var(--emerald);
+  box-shadow:0 16px 40px rgba(0,0,0,.7),0 0 0 1px rgba(57,255,20,.14);
+}
+/* One bright hairline lights across the top instead of a whole-card halo. */
+.card::before{
+  content:"";position:absolute;top:0;left:0;right:0;height:1px;z-index:4;
+  background:linear-gradient(90deg,transparent,var(--neon),transparent);
+  transform:scaleX(0);transform-origin:50% 50%;
+  transition:transform .38s var(--ease);
+}
+.card:hover::before{transform:scaleX(1)}
+.card .shot{position:relative;aspect-ratio:16/10;overflow:hidden;background:var(--ink)}
+.card .shot svg{width:100%;height:100%;transition:transform .5s var(--ease)}
+.card:hover .shot svg{transform:scale(1.07)}
+.card .veil{
+  position:absolute;inset:0;
+  background:linear-gradient(180deg,rgba(2,6,2,.05),rgba(2,6,2,.72));
+  opacity:0;transition:opacity .3s var(--ease);
+  display:grid;place-items:center;
+}
+.card:hover .veil{opacity:1}
+.card .play-now{
+  display:flex;align-items:center;gap:8px;
+  font-family:var(--f-display);font-weight:700;font-size:.75rem;
+  letter-spacing:.14em;text-transform:uppercase;color:#02220A;
+  background:var(--neon);padding:11px 20px;border-radius:99px;
+  box-shadow:var(--glow-md);
+  transform:translateY(10px) scale(.94);opacity:0;
+  transition:transform .3s var(--ease) .04s,opacity .3s var(--ease) .04s;
+}
+.card:hover .play-now{transform:none;opacity:1}
+.card .play-now svg{width:13px;height:13px;fill:#02220A}
+
+.card .meta{padding:12px 13px 0;display:flex;flex-direction:column;gap:2px}
+.card .meta h3{
+  font-size:.98rem;font-weight:600;color:var(--text-2);
+  transition:color .26s var(--ease);letter-spacing:.005em;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+}
+.card:hover .meta h3{color:var(--text)}
+/* Data strip: ruled off from the title, mono, aligned. Reads as a
+   spec sheet rather than two stray labels. */
+.card .row{
+  display:flex;align-items:center;justify-content:space-between;gap:10px;
+  font-family:var(--f-mono);font-size:.64rem;color:var(--text-3);
+  letter-spacing:.08em;font-variant-numeric:tabular-nums;
+  margin:10px 13px 0;padding:9px 0 11px;
+  border-top:1px solid var(--line-soft);
+}
+.card .cat{
+  color:var(--bright);text-transform:uppercase;letter-spacing:.16em;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+}
+.card .plays{display:flex;align-items:center;gap:5px;flex-shrink:0}
+.card .plays svg{width:11px;height:11px;stroke:var(--text-3);fill:none;stroke-width:2}
+
+/* Rank marker — only used in "Popular", where position is real information. */
+.card .rank{
+  position:absolute;bottom:0;left:0;z-index:4;
+  font-family:var(--f-mono);font-size:.62rem;font-weight:700;
+  letter-spacing:.1em;color:var(--text-3);
+  padding:5px 9px;background:var(--panel);
+  border-top:1px solid var(--line-soft);border-right:1px solid var(--line-soft);
+  border-radius:0 6px 0 9px;transition:color .26s var(--ease);
+}
+.card:hover .rank{color:var(--neon)}
+.card.ranked .row{padding-left:44px}
+
+.star{
+  position:absolute;top:8px;right:8px;z-index:5;
+  width:30px;height:30px;border-radius:7px;
+  display:grid;place-items:center;
+  background:rgba(2,6,2,.62);backdrop-filter:blur(7px);
+  border:1px solid rgba(255,255,255,.11);
+  transition:all .24s var(--ease);
+}
+.star svg{width:15px;height:15px;stroke:#fff;fill:none;stroke-width:1.7;transition:all .24s var(--ease)}
+.star:hover{background:rgba(2,6,2,.9);border-color:var(--neon);transform:scale(1.12)}
+.star.on{border-color:var(--neon);background:rgba(57,255,20,.16)}
+.star.on svg{fill:var(--neon);stroke:var(--neon);filter:drop-shadow(0 0 7px rgba(57,255,20,.75))}
+.star.pop{animation:pop .42s var(--ease)}
+@keyframes pop{0%{transform:scale(1)}40%{transform:scale(1.4) rotate(15deg)}100%{transform:scale(1)}}
+
+.badge{
+  position:absolute;top:10px;left:10px;z-index:5;
+  font-family:var(--f-mono);font-size:.58rem;font-weight:700;
+  letter-spacing:.17em;text-transform:uppercase;
+  padding:4px 9px;border-radius:4px;
+  background:var(--neon);color:#02220A;box-shadow:var(--glow-sm);
+}
+.badge.hot{background:var(--chili);color:#fff;box-shadow:0 0 13px rgba(240,81,42,.5)}
+
+/* ---------- control bar ---------- */
+.controls{
+  display:flex;align-items:center;gap:14px;flex-wrap:wrap;
+  padding:18px 0 24px;
+  border-bottom:1px solid var(--line-soft);margin-bottom:26px;
+}
+.cats{display:flex;gap:8px;flex-wrap:wrap;flex:1;min-width:0}
+.pill{
+  font-family:var(--f-mono);font-size:.7rem;font-weight:500;
+  letter-spacing:.11em;text-transform:uppercase;color:var(--text-2);
+  padding:8px 15px;border-radius:99px;
+  background:var(--panel);border:1px solid var(--line-soft);
+  transition:all .22s var(--ease);white-space:nowrap;
+}
+.pill:hover{color:var(--text);border-color:var(--emerald)}
+.pill.on{
+  background:rgba(57,255,20,.13);border-color:var(--bright);
+  color:var(--neon);box-shadow:var(--glow-sm);
+}
+.sorts{display:flex;gap:3px;background:var(--panel);border:1px solid var(--line-soft);border-radius:99px;padding:4px}
+.sorts button{
+  font-family:var(--f-mono);font-size:.67rem;letter-spacing:.11em;text-transform:uppercase;
+  color:var(--text-3);padding:7px 14px;border-radius:99px;transition:all .22s var(--ease);
+  white-space:nowrap;
+}
+.sorts button:hover{color:var(--text-2)}
+.sorts button.on{background:var(--panel-3);color:var(--neon);box-shadow:inset 0 0 0 1px rgba(57,255,20,.25)}
+
+.count{
+  font-family:var(--f-mono);font-size:.7rem;color:var(--text-3);
+  letter-spacing:.13em;text-transform:uppercase;font-variant-numeric:tabular-nums;
+}
+.count b{color:var(--neon);font-weight:700}
+
+/* ---------- empty state ---------- */
+.empty{
+  text-align:center;padding:86px 22px;
+  display:flex;flex-direction:column;align-items:center;gap:15px;
+}
+.empty .mark{width:56px;opacity:.34;margin-bottom:6px}
+.empty h3{font-size:clamp(1.3rem,3.4vw,1.9rem);text-transform:uppercase;letter-spacing:.06em}
+.empty p{color:var(--text-3);max-width:44ch;font-size:.94rem}
+
+/* ---------- category tiles ---------- */
+.cat-grid{display:grid;gap:16px;grid-template-columns:repeat(auto-fill,minmax(215px,1fr));padding-bottom:20px}
+.cat-tile{
+  position:relative;overflow:hidden;
+  border:1px solid var(--line-soft);border-radius:var(--r);
+  background:var(--panel);padding:24px 20px;min-height:132px;
+  display:flex;flex-direction:column;justify-content:flex-end;gap:5px;
+  transition:all .3s var(--ease);text-align:left;
+}
+.cat-tile:hover{transform:translateY(-5px);border-color:var(--bright);box-shadow:0 14px 34px rgba(0,0,0,.6),var(--glow-md)}
+.cat-tile .glow{position:absolute;inset:0;opacity:.5;transition:opacity .3s var(--ease);pointer-events:none}
+.cat-tile:hover .glow{opacity:.95}
+.cat-tile h3{font-size:1.2rem;text-transform:uppercase;letter-spacing:.04em;position:relative}
+.cat-tile span{
+  font-family:var(--f-mono);font-size:.68rem;letter-spacing:.15em;
+  text-transform:uppercase;color:var(--text-3);position:relative;
+}
+
+/* ---------- detail view ---------- */
+.detail{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:44px;padding:38px 0 16px;align-items:start}
+.detail .hero-shot{
+  position:relative;border-radius:var(--r-lg);overflow:hidden;
+  border:1px solid var(--line);box-shadow:0 22px 60px rgba(0,0,0,.66),var(--glow-lg);
+  aspect-ratio:16/10;background:var(--ink);
+}
+.detail .hero-shot svg{width:100%;height:100%}
+.detail-info{display:flex;flex-direction:column;gap:18px;padding-top:6px}
+.detail-info h1{font-size:clamp(2rem,5vw,3.3rem);text-transform:uppercase;letter-spacing:.01em}
+.detail-info .facts{display:flex;gap:9px;flex-wrap:wrap;align-items:center}
+.detail-info p.desc{color:var(--text-2);font-size:1.02rem;max-width:60ch}
+.tags{display:flex;gap:7px;flex-wrap:wrap}
+.tag-chip{
+  font-family:var(--f-mono);font-size:.66rem;letter-spacing:.1em;
+  color:var(--text-3);padding:5px 11px;border-radius:99px;
+  border:1px solid var(--line-soft);background:var(--panel);
+  transition:all .22s var(--ease);
+}
+.tag-chip:hover{color:var(--bright);border-color:var(--emerald)}
+.detail-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:4px}
+.fav-btn{
+  display:inline-flex;align-items:center;gap:9px;
+  font-family:var(--f-display);font-weight:700;font-size:.85rem;
+  letter-spacing:.13em;text-transform:uppercase;
+  padding:14px 26px;border-radius:99px;
+  border:1px solid var(--line);background:var(--panel);color:var(--text-2);
+  transition:all .26s var(--ease);
+}
+.fav-btn svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:1.8}
+.fav-btn:hover{border-color:var(--bright);color:var(--text);transform:translateY(-2px);box-shadow:var(--glow-sm)}
+.fav-btn.on{color:var(--neon);border-color:var(--bright);background:rgba(57,255,20,.09)}
+.fav-btn.on svg{fill:var(--neon);stroke:var(--neon)}
+
+.stat-row{display:flex;gap:26px;flex-wrap:wrap;padding:16px 0;border-block:1px solid var(--line-soft)}
+.stat{display:flex;flex-direction:column;gap:2px}
+.stat b{font-family:var(--f-display);font-size:1.3rem;color:var(--text);font-variant-numeric:tabular-nums}
+.stat span{font-family:var(--f-mono);font-size:.62rem;letter-spacing:.19em;text-transform:uppercase;color:var(--text-3)}
+
+.crumb{
+  display:inline-flex;align-items:center;gap:8px;
+  font-family:var(--f-mono);font-size:.7rem;letter-spacing:.15em;text-transform:uppercase;
+  color:var(--text-3);padding:20px 0 0;transition:color .22s var(--ease);
+}
+.crumb:hover{color:var(--neon)}
+.crumb svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2}
+
+/* ---------- player ---------- */
+.player{
+  position:relative;
+  aspect-ratio:16/9;width:100%;
+  border-radius:var(--r-lg);overflow:hidden;
+  border:1px solid var(--line);
+  background:
+    radial-gradient(80% 70% at 50% 45%, rgba(11,107,22,.24), transparent 70%),
+    linear-gradient(180deg,#040D05,#010401);
+  box-shadow:0 26px 80px rgba(0,0,0,.8),inset 0 0 90px rgba(11,107,22,.1);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:16px;text-align:center;padding:30px;
+}
+.player::before{
+  content:"";position:absolute;inset:0;pointer-events:none;
+  background:repeating-linear-gradient(180deg,rgba(57,255,20,.028) 0 1px,transparent 1px 4px);
+}
+.player .sweep{
+  position:absolute;left:0;right:0;height:180px;pointer-events:none;
+  background:linear-gradient(180deg,transparent,rgba(57,255,20,.07),transparent);
+  animation:sweep 4.2s linear infinite;
+}
+@keyframes sweep{0%{top:-180px}100%{top:100%}}
+.player .mark{width:62px;animation:bob 3.4s ease-in-out infinite;position:relative}
+.player h2{
+  font-size:clamp(1.4rem,4.4vw,2.4rem);text-transform:uppercase;
+  letter-spacing:.15em;position:relative;
+  text-shadow:0 0 30px rgba(57,255,20,.4);
+}
+.player p{color:var(--text-2);max-width:48ch;position:relative;font-size:.96rem}
+.player .load{
+  width:min(280px,70%);height:2px;background:var(--line-soft);
+  border-radius:2px;overflow:hidden;position:relative;
+}
+.player .load i{
+  position:absolute;top:0;left:0;height:100%;width:38%;
+  background:linear-gradient(90deg,transparent,var(--neon),transparent);
+  box-shadow:var(--glow-sm);animation:scan 2s var(--ease) infinite;
+}
+@keyframes scan{0%{left:-38%}100%{left:100%}}
+.player .pbtns{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;position:relative;margin-top:6px}
+.player .stamp{
+  position:absolute;top:16px;left:18px;
+  font-family:var(--f-mono);font-size:.6rem;letter-spacing:.24em;
+  text-transform:uppercase;color:var(--text-3);
+  display:flex;align-items:center;gap:7px;
+}
+.player .stamp i{width:5px;height:5px;border-radius:50%;background:var(--chili);animation:blink 1.6s ease-in-out infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
+
+/* ---------- community ---------- */
+.community{
+  margin:72px 0 0;padding:44px 38px;
+  border:1px solid var(--line);border-radius:var(--r-lg);
+  background:
+    radial-gradient(90% 130% at 12% 0%, rgba(11,107,22,.24), transparent 62%),
+    var(--panel);
+  display:flex;align-items:center;justify-content:space-between;gap:26px;flex-wrap:wrap;
+}
+.community h3{font-size:clamp(1.4rem,3.4vw,2rem);text-transform:uppercase;letter-spacing:.02em}
+.community p{color:var(--text-3);margin-top:8px;max-width:52ch}
+.dbtn{
+  display:inline-flex;align-items:center;gap:11px;
+  font-family:var(--f-display);font-weight:700;font-size:.85rem;
+  letter-spacing:.13em;text-transform:uppercase;
+  padding:15px 28px;border-radius:99px;
+  background:var(--ink);border:1px solid var(--bright);color:var(--text);
+  transition:all .27s var(--ease);
+}
+.dbtn svg{width:20px;height:20px;fill:var(--neon)}
+.dbtn:hover{transform:translateY(-3px);box-shadow:var(--glow-md);background:rgba(57,255,20,.08)}
+
+/* ---------- footer ---------- */
+.ftr{
+  margin-top:86px;border-top:1px solid var(--line-soft);
+  background:linear-gradient(180deg,transparent,rgba(7,61,11,.12));
+  padding:52px 0 30px;
+}
+.ftr-in{display:flex;justify-content:space-between;gap:40px;flex-wrap:wrap}
+.ftr-brand{max-width:340px}
+.ftr-brand .brand{margin-bottom:13px}
+.ftr-brand p{color:var(--text-3);font-size:.9rem}
+.ftr-links{display:flex;gap:52px;flex-wrap:wrap}
+.ftr-col h4{
+  font-family:var(--f-mono);font-size:.64rem;font-weight:700;letter-spacing:.24em;
+  text-transform:uppercase;color:var(--bright);margin-bottom:14px;
+}
+.ftr-col a{display:block;padding:5px 0;color:var(--text-3);font-size:.88rem;transition:color .22s var(--ease)}
+.ftr-col a:hover{color:var(--neon)}
+.ftr-btm{
+  margin-top:40px;padding-top:22px;border-top:1px solid var(--line-soft);
+  display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;
+  font-family:var(--f-mono);font-size:.68rem;color:var(--text-3);letter-spacing:.09em;
+}
+
+/* ---------- toast ---------- */
+.toast{
+  position:fixed;bottom:26px;left:50%;z-index:150;
+  transform:translate(-50%,26px);opacity:0;pointer-events:none;
+  background:var(--panel-2);border:1px solid var(--bright);
+  border-radius:99px;padding:12px 24px;
+  font-family:var(--f-mono);font-size:.74rem;letter-spacing:.11em;text-transform:uppercase;
+  color:var(--neon);box-shadow:var(--glow-md),0 12px 34px rgba(0,0,0,.6);
+  transition:all .32s var(--ease);
+}
+.toast.show{transform:translate(-50%,0);opacity:1}
+
+/* ---------- responsive ---------- */
+@media (max-width:1080px){
+  .detail{grid-template-columns:1fr;gap:30px}
+  .search{width:210px}
+  .search:focus-within{width:240px}
+}
+@media (max-width:900px){
+  .nav{display:none}
+  .burger{display:grid}
+  .hud .chip.hide-md{display:none}
+}
+@media (max-width:720px){
+  :root{--head-h:58px}
+  .hdr{padding:0 15px;gap:10px}
+  .hud{display:none}
+  .search{width:auto;flex:1;min-width:0}
+  .search:focus-within{width:auto}
+  .search kbd{display:none}
+  .wrap,.rail{padding-left:15px;padding-right:15px}
+  .sect{padding:44px 0 6px}
+  .grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+  .cat-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+  .rail>*{flex-basis:78vw}
+  .hero{min-height:auto;padding:48px 15px 46px}
+  .hero .cta{width:100%;flex-direction:column;align-items:stretch}
+  .hero .cta .btn{justify-content:center}
+  .card .meta{padding:10px 11px 12px}
+  .card .meta h3{font-size:.88rem}
+  .community{padding:30px 22px;flex-direction:column;align-items:flex-start}
+  .dbtn,.btn.lg{width:100%;justify-content:center}
+  .ftr-links{gap:32px}
+  .sorts{width:100%;justify-content:space-between}
+  .sorts button{flex:1;padding:8px 6px;text-align:center}
+  .controls{gap:12px}
+}
+@media (max-width:400px){
+  .grid,.cat-grid{gap:10px}
+  .brand b{font-size:.78rem;letter-spacing:.1em}
+  .brand .mark{width:25px}
+}
+
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}
+  #bg-canvas{display:none}
+  .grain{animation:none}
+  /* Aurora stays — it's static colour without motion, which is the point. */
+  .aurora i{animation:none!important}
+  /* The caret is the one exception — it's an affordance, not decoration,
+     and a frozen block reads as a rendering fault. */
+  .hero h1 .ch.cur::after{animation:caret 1.05s steps(1,end) infinite!important}
+}

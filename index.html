@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="dark">
+<meta name="description" content="Project Tajinn - play, discover, escape.">
+<title>Project Tajinn</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=Barlow:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap">
+
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<!-- boot -->
+<div id="boot">
+  <div id="boot-mark"></div>
+  <div class="bt">Project Tajinn</div>
+  <div class="bs">Initializing<span id="dots">...</span></div>
+  <div class="bar"><i></i></div>
+</div>
+
+<div class="aurora" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+<canvas id="bg-canvas" aria-hidden="true"></canvas>
+<div class="atmos" aria-hidden="true"></div>
+<div class="grain" aria-hidden="true"></div>
+<div id="defs" aria-hidden="true" style="position:absolute;width:0;height:0;overflow:hidden"></div>
+
+<div class="shell">
+  <header class="hdr">
+    <a class="brand" href="#/" aria-label="Project Tajinn home">
+      <span id="hdr-mark"></span>
+      <b>Project <span>Tajinn</span></b>
+    </a>
+
+    <nav class="nav" id="nav"></nav>
+
+    <div class="hdr-r">
+      <div class="hud">
+        <div class="chip hide-md"><i></i><span id="hud-clock">--:--</span></div>
+        <div class="chip hide-md"><span id="hud-ping">-- ms</span></div>
+        <div class="chip batt hide-md"><i></i><span id="hud-batt">100%</span></div>
+      </div>
+
+      <label class="search">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+        <input id="q" type="search" placeholder="Search games" autocomplete="off" aria-label="Search games">
+        <kbd>/</kbd>
+      </label>
+
+      <a class="icon-btn" href="#/favorites" aria-label="Favorites" title="Favorites">
+        <svg viewBox="0 0 24 24" stroke-linejoin="round"><path d="M12 3.6l2.6 5.3 5.8.85-4.2 4.1 1 5.8-5.2-2.75L6.8 19.6l1-5.8-4.2-4.1 5.8-.85z"/></svg>
+        <span class="cnt" id="fav-count" data-n="0"></span>
+      </a>
+
+      <button class="icon-btn burger" id="burger" aria-label="Menu" aria-expanded="false">
+        <svg viewBox="0 0 24 24" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <nav class="drawer" id="drawer"></nav>
+
+  <main id="app"></main>
+
+  <footer class="ftr">
+    <div class="wrap">
+      <div class="ftr-in">
+        <div class="ftr-brand">
+          <a class="brand" href="#/"><span id="ftr-mark"></span><b>Project <span>Tajinn</span></b></a>
+          <p>A place to play, discover, and enjoy your favorite games. Built for people who&rsquo;d rather be playing.</p>
+        </div>
+        <div class="ftr-links">
+          <div class="ftr-col">
+            <h4>Browse</h4>
+            <a href="#/">Home</a>
+            <a href="#/games">Games</a>
+            <a href="#/categories">Categories</a>
+            <a href="#/favorites">Favorites</a>
+          </div>
+          <div class="ftr-col">
+            <h4>Community</h4>
+            <a href="#/" id="ftr-discord">Discord</a>
+            <a href="#/">Contact</a>
+            <a href="#/">Suggest a game</a>
+          </div>
+          <div class="ftr-col">
+            <h4>Legal</h4>
+            <a href="#/">Privacy</a>
+            <a href="#/">Terms</a>
+          </div>
+        </div>
+      </div>
+      <div class="ftr-btm">
+        <span>&copy; 2026 Project Tajinn</span>
+        <span id="ftr-stat">30 titles &middot; prototype build</span>
+      </div>
+    </div>
+  </footer>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+
+<!-- Load order matters: games.js defines the GAMES data that app.js reads,
+     and background.js defines startBackground(), which app.js calls on boot.
+     These are plain scripts, not modules, so the page still runs from
+     file:// with no server. -->
+<script src="js/games.js"></script>
+<script src="js/background.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
